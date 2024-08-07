@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 - **Dialog Text**: Change the text in dialogs and toast messages to fit your application's needs.
 
 
-
+# video 
 
 https://github.com/user-attachments/assets/d1d429d7-ed15-4207-a334-db21493b23e0
 
