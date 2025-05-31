@@ -2,14 +2,21 @@
 
 ## Overview
 
-This library provides a streamlined way to manage permissions in Android applications. It simplifies requesting, handling, and responding to various permission states (granted, denied, and permanently denied) using a user-friendly interface.
+PermissionsLibrary is a lightweight and extensible Android library that simplifies runtime permission handling in your applications.
+It helps developers request, explain, and manage Android permissions in a modern and user-friendly way — with full support for rationale dialogs, permanently denied detection, Jetpack Compose, Kotlin coroutines, and more.
 
 ## Features
 
-- Request multiple permissions with a single button click.
-- Show permission rationale dialogs.
-- Handle different permission states: granted, denied, and permanently denied.
-- Open app settings for permanently denied permissions.
+- Request multiple permissions in one call
+- Show rationale dialogs before requesting permissions
+- Handle "denied" and "permanently denied" permission states
+- Guide users to app settings for permanently denied permissions
+- Observe permission state changes using LiveData
+- Jetpack Compose support
+- Support for Kotlin Coroutines and Flow
+- Support for special permissions (SYSTEM_ALERT_WINDOW, WRITE_SETTINGS)
+- Fully customizable UI dialogs and buttons
+- Easily integrated into Java and Kotlin apps
 
 ## Installation
 
@@ -106,11 +113,68 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
+---
+
+## 🎯 Advanced Features
+
+### 🔁 Coroutine Support
+
+```kotlin
+lifecycleScope.launch {
+    val result = permissionsManager.requestPermissionsAsync(
+        listOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+    )
+    if (result.allGranted) {
+        // Proceed
+    }
+}
+```
+
+---
+
+### 🧱 Jetpack Compose Support (Optional Module)
+
+```kotlin
+@Composable
+fun CameraPermissionView() {
+    val permissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    if (permissionState.hasPermission) {
+        Text("Permission granted!")
+    } else {
+        Button(onClick = { permissionState.launchPermissionRequest() }) {
+            Text("Request Camera")
+        }
+    }
+}
+```
+
+---
+
+### ⚙️ Handling "Don't Ask Again"
+
+```java
+if (permissionsManager.isPermissionPermanentlyDenied(Manifest.permission.CAMERA)) {
+    permissionsManager.showSettingsDialog();
+}
+```
+
+---
+
+### 🔒 Requesting Special Permissions
+
+```java
+if (!Settings.canDrawOverlays(context)) {
+    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+    startActivity(intent);
+}
+```
+---
 
 ## Customization
 
 - **Button Styles**: Customize the `MaterialButton` styles (e.g., corner radius, background color) in `PermissionsManager.java`.
 - **Dialog Text**: Change the text in dialogs and toast messages to fit your application's needs.
+- **Localization**: Fully support for internationalization (strings.xml).
 
 
 ## video 
